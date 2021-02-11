@@ -5,11 +5,11 @@
 
 #define LED_PIN     2
 #define NUM_LEDS    145
-#define BRIGHTNESS  255
+#define BRIGHTNESS  8
 #define LED_TYPE    WS2812
 
 CRGB leds[NUM_LEDS];
-ParticleContainer p(25);
+ParticleContainer p(32);
 
 
 void setup() {
@@ -23,8 +23,8 @@ void setup() {
 void loop() {
   long c = 0;
   while (true) {
-    if (c % 200 == 0) {
-      p.emit(1, 2.2, -0.03, 100, ColorFromPalette(HeatColors_p, random8(), 255, LINEARBLEND), 5);
+    if (c % random8() == 0) {
+      p.emit(1, 3.2, -0.05, random8(), ColorFromPalette(HeatColors_p, random8(), 255, LINEARBLEND), 2);
     }
     p.update();
     p.render();
@@ -32,6 +32,6 @@ void loop() {
 
     fadeToBlackBy(leds, NUM_LEDS, 100);
     FastLED.show();
-    delay(100);
+    delay(10);
   }
 }

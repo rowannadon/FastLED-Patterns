@@ -27,7 +27,6 @@ void ParticleContainer::emit(float p, float v, float a, int life, CRGB c, int s)
     particles[numAliveParticles].color = c;//(c/4)*(s+1);
     particles[numAliveParticles].splits = s;
     numAliveParticles++;
-    Serial.println("new particle created...");
 }
 
 void ParticleContainer::kill(int index) {
@@ -36,12 +35,12 @@ void ParticleContainer::kill(int index) {
 }
 
 void ParticleContainer::update() {
-    Serial.println("-------------------");
+    // Serial.println("-------------------");
     for (int i = 0; i < numAliveParticles; i++) {
-        Serial.print("particle: ");
-        Serial.print(i);
-        Serial.print(", position: ");
-        Serial.println(particles[i].pos);
+        // Serial.print("particle: ");
+        // Serial.print(i);
+        // Serial.print(", position: ");
+        // Serial.println(particles[i].pos);
 
         particles[i].lastPos = particles[i].pos;
         particles[i].pos += particles[i].vel;
@@ -49,17 +48,21 @@ void ParticleContainer::update() {
         particles[i].lifeTime--;
 
         if (particles[i].pos < 0) {
-            particles[i].vel *= -1;
+            //particles[i].vel *= -1;
+            kill(i);
         } else if (particles[i].pos > 144) {
             //particles[i].vel *= -1;
             kill(i);
         }
 
-        if (particles[i].lifeTime < 0) {
-            kill(i);
+        if ((particles[i].lifeTime < 0)) {
             if (particles[i].splits > 0) {
-                emit(particles[i].pos, particles[i].vel, 0, 50, ColorFromPalette(HeatColors_p, random8(), 255, LINEARBLEND), particles[i].splits-1);
+                emit(particles[i].pos, particles[i].vel+0.5, 0, 30, ColorFromPalette(RainbowColors_p, random8(), 255, LINEARBLEND), particles[i].splits-1);
+                emit(particles[i].pos, particles[i].vel+1, 0, 30, ColorFromPalette(RainbowColors_p, random8(), 255, LINEARBLEND), particles[i].splits-1);
+                emit(particles[i].pos, particles[i].vel-0.5, 0, 30, ColorFromPalette(RainbowColors_p, random8(), 255, LINEARBLEND), particles[i].splits-1);
+                emit(particles[i].pos, particles[i].vel-1, 0, 30, ColorFromPalette(RainbowColors_p, random8(), 255, LINEARBLEND), particles[i].splits-1);
             }
+            kill(i);
         }
     }
 }
